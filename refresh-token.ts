@@ -1,12 +1,73 @@
 import * as express from 'express';
+import * as session from 'express-session';
 import * as passport from 'passport';
+import * as fs from 'fs-extra';
+
 import { Strategy } from 'passport-smartthings';
 
 const DEFAULT_PORT = 3000;
+const CONFIG_FILE = './config.json';
+const USER_FILE = './userInfo.json';
+
 const app = express();
+app.use(
+    session({
+        secret: 'yolo-swag'
+    })
+);
 
-app.get('/auth', passport.authenticate('smart-things'), (req, res) => {
-    res.send('Hello');
-});
+async function init() {
+    const configExists = await fs.pathExists(CONFIG_FILE);
+    if (!configExists) {
+        console.error(
+            'Please create a "config.json" file with "clientID" and "clientSecret" from SmartThings'
+        );
 
-app.listen(DEFAULT_PORT, console.log.bind(null, 'server started'));
+        process.exit(1);
+    }
+
+    const config: {
+        clientID: string;
+        clientSecret: string;
+    } = await fs.readJson(CONFIG_FILE);
+
+    passport.use(new Strategy({ ...config }));
+
+    app.get(
+        '/auth',
+        passport.authenticate(
+            'smartthings',
+            { session: false, scope: ['app'] },
+            (...args) => console.log(JSON.stringify(args))
+        )
+    ).get('/auth/smartthings/callback', (req, res, next) => {
+        passport.authenticate(
+            'smartthings',
+            { session: false, scope: ['app'] },
+            async (error, user, info) => {
+                try {
+                    await fs.writeJson(
+                        USER_FILE,
+                        { error, user, info },
+                        { spaces: 4 }
+                    );
+                } catch (e) {
+                    return next(e);
+                }
+
+                if (error) {
+                    return next(error);
+                }
+
+                res.send('OK');
+            }
+        )(req, res, next);
+    });
+
+    app.listen(
+        DEFAULT_PORT,
+        console.log.bind(null, 'server started on port', DEFAULT_PORT)
+    );
+}
+
+init();

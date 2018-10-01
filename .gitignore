@@ -1,4 +1,10 @@
+# Node/Yarn stuff
 node_modules
+yarn-error.log
+
+# Build ouput
 dist
 
-yarn-error.log
+# App state
+config.json
+userInfo.json

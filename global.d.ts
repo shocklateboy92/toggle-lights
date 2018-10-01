@@ -1,3 +1,3 @@
 declare module 'passport-smartthings' {
-    export { Strategy } from 'passport';
+    export const Strategy: any;
 }
