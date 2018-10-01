@@ -1,0 +1,7 @@
+{
+  "name": "toggle-lights",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Lasath Fernando <devel@lasath.org>",
+  "license": "MIT"
+}
