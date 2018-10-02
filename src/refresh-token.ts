@@ -5,9 +5,10 @@ import * as fs from 'fs-extra';
 
 import { Strategy } from 'passport-smartthings';
 import { exec } from 'child_process';
+import { resolve } from 'path';
 
 const DEFAULT_PORT = 3000;
-const CONFIG_FILE = './config.json';
+const CONFIG_FILE = resolve(__dirname, 'config.json');
 const USER_FILE = './userInfo.json';
 
 const app = express();
