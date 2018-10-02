@@ -1,0 +1,21 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Comment[en_US]=
+Comment=
+Exec=/home/fernie/src/toggle-lights/src/lib/toggle-light.sh 18f0f948-1591-42de-92e7-328e638f0bff
+GenericName[en_US]=Toggles all lights in the office room
+GenericName=Toggles all lights in the office room
+Icon=/home/fernie/src/toggle-lights/src/resources/light6-icn@2x.png
+MimeType=
+Name[en_US]=Toggle Office Lights
+Name=Toggle Office Lights
+Path=/home/fernie/src/toggle-lights
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+Version=1.0
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
