@@ -4,6 +4,7 @@ import * as passport from 'passport';
 import * as fs from 'fs-extra';
 
 import { Strategy } from 'passport-smartthings';
+import { exec } from 'child_process';
 
 const DEFAULT_PORT = 3000;
 const CONFIG_FILE = './config.json';
@@ -64,10 +65,13 @@ async function init() {
         )(req, res, next);
     });
 
-    app.listen(
-        DEFAULT_PORT,
-        console.log.bind(null, 'server started on port', DEFAULT_PORT)
-    );
+    app.listen(DEFAULT_PORT, () => {
+        const url = `http://localhost:${DEFAULT_PORT}/auth`;
+        console.log(`Listening on ${url}`);
+        if (process.platform === 'linux') {
+            exec(`xdg-open ${url}`);
+        }
+    });
 }
 
 init();
